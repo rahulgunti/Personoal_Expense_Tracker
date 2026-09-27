@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{% block title %}Overview{% endblock %} · Paisa</title><link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"><script defer src="{{ url_for('static', filename='app.js') }}"></script></head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+{% if g.user %}
+<aside class="sidebar">
+<a class="brand" href="{{ url_for('web.dashboard') }}"><span class="brand-icon">₹</span> paisa<span class="brand-dot">.</span></a>
+<p class="nav-label">YOUR WORKSPACE</p>
+<nav aria-label="Main navigation">
+<a class="{{ 'selected' if active == 'dashboard' }}" href="{{ url_for('web.dashboard') }}"><span aria-hidden="true">▦</span> Dashboard</a>
+<a class="{{ 'selected' if active == 'expenses' }}" href="{{ url_for('web.expenses') }}"><span aria-hidden="true">⇄</span> Expenses</a>
+<a class="{{ 'selected' if active == 'categories' }}" href="{{ url_for('web.categories') }}"><span aria-hidden="true">▤</span> Categories</a>
+</nav>
+<div class="sidebar-tip"><span class="tip-icon">↗</span><strong>Small habits.<br>Better money days.</strong><p>A little clarity goes a long way. Keep track, one expense at a time.</p></div>
+<div class="account"><span class="avatar">{{ g.user.name[0]|upper }}</span><div><strong>{{ g.user.name }}</strong><small>Personal account · INR</small></div></div>
+<form action="{{ url_for('web.logout') }}" method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="logout" type="submit">Sign out ↗</button></form>
+</aside>
+{% endif %}
+<main id="main" class="{{ 'workspace' if g.user else 'auth-shell' }}">
+{% if g.user %}<header class="topbar"><span>Personal expense tracker</span><span class="currency-label">₹ &nbsp; Indian Rupee <span class="live-dot"></span></span></header>{% endif %}
+<div class="{{ 'page' if g.user else '' }}">
+{% with messages = get_flashed_messages(with_categories=true) %}{% for category, message in messages %}<div class="flash {{ category }}" role="alert">{{ message }}</div>{% endfor %}{% endwith %}
+{% block content %}{% endblock %}
+</div>
+</main>
+</body></html>

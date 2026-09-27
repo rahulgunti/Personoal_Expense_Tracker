@@ -1,0 +1,1 @@
+{% extends 'base.html' %}{% block title %}{{ error.code }}{% endblock %}{% block content %}<div class="empty"><h1>{{ error.code }}</h1><p>{{ error.description }}</p><a class="button" href="{{ url_for('web.dashboard') }}">Return to dashboard</a></div>{% endblock %}

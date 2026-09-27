@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}{{ 'Create account' if register else 'Sign in' }}{% endblock %}
+{% block content %}
+<div class="auth-layout"><section class="auth-story"><a class="brand" href="{{ url_for('web.login') }}"><span class="brand-icon">₹</span> paisa.</a><div><p class="eyebrow">A LITTLE CLARITY, EVERY DAY</p><h1>Your money.<br>Your everyday.<br><em>In perspective.</em></h1><p>Make sense of where your rupees go, with a simple space for all your expenses.</p><div class="story-art" aria-hidden="true"><span>EVERY RUPEE HAS A STORY</span><div class="art-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><strong>Make yours count. ↗</strong></div></div><small>Simple tracking. Thoughtful spending.</small></section>
+<section class="auth-form"><div class="auth-form-inner"><p class="eyebrow">LET’S GET STARTED</p><h2>{{ 'A fresh start for your finances.' if register else 'Welcome back.' }}</h2><p class="muted">{{ 'Create your account and start with your first expense.' if register else 'Sign in to see your spending at a glance.' }}</p>
+<form method="post" class="stack"><input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+{% if register %}<label>Your name<input name="name" autocomplete="name" required maxlength="80" placeholder="How should we call you?" value="{{ request.form.get('name', '') }}"></label>{% endif %}
+<label>Email address<input type="email" name="email" autocomplete="email" required maxlength="254" placeholder="you@example.com" value="{{ request.form.get('email', '') }}"></label>
+<label>Password<input type="password" name="password" autocomplete="{{ 'new-password' if register else 'current-password' }}" required {% if register %}minlength="8"{% endif %} maxlength="128" placeholder="{{ 'At least 8 characters' if register else 'Enter your password' }}"></label>
+<button class="button" type="submit">{{ 'Create account' if register else 'Sign in' }} <span>→</span></button></form>
+<p class="auth-switch">{{ 'Already have an account?' if register else 'New to Paisa?' }} <a href="{{ url_for('web.login' if register else 'web.register') }}">{{ 'Sign in' if register else 'Create an account' }}</a></p><div class="auth-note">Your expenses stay in your account.<br>All amounts are tracked in Indian Rupees (INR).</div></div></section></div>
+{% endblock %}
